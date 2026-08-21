@@ -7,11 +7,11 @@
  */
 const EMERGENCY_CONTACTS = [
   {
-    name: "Beta",
+    name: "Son",
     phone: "+91XXXXXXXXXX",
   },
   {
-    name: "Beti",
+    name: "Daughter",
     phone: "+91XXXXXXXXXX",
   },
 ];
@@ -50,6 +50,7 @@ function renderEmergencyContacts() {
 
     const whatsappButton = document.createElement("button");
     whatsappButton.type = "button";
+    whatsappButton.style.backgroundColor = "#25D366";
     whatsappButton.className = "secondary-button";
     whatsappButton.style.marginTop = "10px";
     whatsappButton.innerHTML =
