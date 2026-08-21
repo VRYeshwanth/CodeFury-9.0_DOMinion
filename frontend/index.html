@@ -1,47 +1,259 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="theme-color" content="#0b5cab" />
-  <meta name="description" content="Saathi - a simple voice-first daily assistant for elderly users." />
-  <title>Saathi — Your Daily Assistant</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=Noto+Sans+Kannada:wght@500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css" />
-</head>
-<body>
-  <div class="app-shell">
-    <header class="topbar">
-      <button class="brand" id="homeButton" aria-label="Go to Saathi home">
-        <span class="brand-mark">S</span>
-        <span>
-          <strong>Saathi</strong>
-          <small id="brandSubtitle">Your daily companion</small>
-        </span>
-      </button>
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#0b1f33" />
+    <title>Saathi</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="app-header">
+        <div>
+          <p class="brand">SAATHI</p>
+          <p class="tagline" data-i18n="tagline">Your daily companion</p>
+        </div>
+        <button
+          id="languageToggle"
+          class="language-button"
+          type="button"
+          aria-label="Change language"
+        >
+          ಕನ್ನಡ
+        </button>
+      </header>
 
-      <div class="top-actions">
-        <span class="language-pill" id="languagePill">English</span>
-        <button class="icon-button" id="stopSpeechButton" aria-label="Stop speaking" title="Stop speaking">■</button>
-      </div>
-    </header>
+      <section
+        id="homeScreen"
+        class="screen active"
+        aria-labelledby="homeTitle"
+      >
+        <div class="welcome">
+          <p class="eyebrow" data-i18n="welcomeEyebrow">Hello</p>
+          <h1 id="homeTitle" data-i18n="welcomeTitle">How can Saathi help?</h1>
+        </div>
 
-    <main id="app" class="main-content" aria-live="polite"></main>
+        <div class="feature-list">
+          <button id="messageFeatureButton" class="feature-card" type="button">
+            <span class="feature-icon" aria-hidden="true">💬</span>
+            <span>
+              <strong data-i18n="messageFeature">Understand a Message</strong>
+              <small data-i18n="messageFeatureHint"
+                >Make a difficult message simple</small
+              >
+            </span>
+          </button>
 
-    <footer class="footer">
-      <span>Saathi</span>
-      <span>•</span>
-      <span id="demoFooter">Simple. Safe. With you.</span>
-    </footer>
-  </div>
+          <button id="upiFeatureButton" class="feature-card" type="button">
+            <span class="feature-icon" aria-hidden="true">💰</span>
+            <span>
+              <strong data-i18n="upiFeature">Practice Sending Money</strong>
+              <small data-i18n="upiFeatureHint"
+                >Demo only — no real payment</small
+              >
+            </span>
+          </button>
 
-  <div class="toast" id="toast" role="status" aria-live="assertive"></div>
-  <script src="js/app.js"></script>
-  <script src="js/voice.js"></script>
-  <script src="js/messageExplainer.js"></script>
-  <script src="js/upiflow.js"></script>
-  <script src="js/emergency.js"></script>
-</body>
+          <button
+            id="emergencyFeatureButton"
+            class="feature-card emergency-card"
+            type="button"
+          >
+            <span class="feature-icon" aria-hidden="true">🚨</span>
+            <span>
+              <strong data-i18n="emergencyFeature">Emergency Help</strong>
+              <small data-i18n="emergencyFeatureHint"
+                >Call someone you trust</small
+              >
+            </span>
+          </button>
+        </div>
+      </section>
+
+      <section
+        id="messageScreen"
+        class="screen"
+        aria-labelledby="messageTitle"
+        hidden
+      >
+        <button class="back-button" type="button" data-back-home>
+          ← <span data-i18n="back">Back</span>
+        </button>
+
+        <div class="screen-heading">
+          <p class="eyebrow">1</p>
+          <h1 id="messageTitle" data-i18n="messageTitle">
+            Understand a Message
+          </h1>
+          <p data-i18n="messagePrompt">
+            Paste or type the message you received.
+          </p>
+        </div>
+
+        <div class="voice-row">
+          <button
+            id="messageListenButton"
+            class="secondary-button voice-button"
+            type="button"
+          >
+            🎙️ <span data-i18n="speakMessage">Speak Message</span>
+          </button>
+        </div>
+
+        <label class="sr-only" for="messageInput" data-i18n="messageInputLabel"
+          >Message</label
+        >
+        <textarea
+          id="messageInput"
+          class="large-input"
+          rows="6"
+          placeholder="Example: Your bank account has been debited by Rs 2000."
+          data-i18n-placeholder="messagePlaceholder"
+        ></textarea>
+
+        <button id="explainButton" class="primary-button" type="button">
+          <span data-i18n="explain">EXPLAIN</span>
+        </button>
+
+        <p
+          id="messageStatus"
+          class="status-message"
+          role="status"
+          aria-live="polite"
+        ></p>
+
+        <div id="explanationPanel" class="result-panel" hidden>
+          <p class="eyebrow" data-i18n="whatThisMeans">WHAT THIS MEANS</p>
+          <p id="explanationText" class="result-text"></p>
+          <button
+            id="readExplanationButton"
+            class="secondary-button"
+            type="button"
+          >
+            🔊 <span data-i18n="readAloud">READ ALOUD</span>
+          </button>
+        </div>
+      </section>
+
+      <section id="upiScreen" class="screen" aria-labelledby="upiTitle" hidden>
+        <button class="back-button" type="button" data-back-home>
+          ← <span data-i18n="back">Back</span>
+        </button>
+
+        <div class="demo-banner">
+          <strong data-i18n="demoOnly">DEMO ONLY</strong>
+          <span data-i18n="noMoney">No real money is transferred.</span>
+        </div>
+
+        <div class="screen-heading">
+          <p class="eyebrow">2</p>
+          <h1 id="upiTitle" data-i18n="upiTitle">Practice Sending Money</h1>
+          <p id="upiQuestion" data-i18n="upiStarting">
+            We will guide you one step at a time.
+          </p>
+        </div>
+
+        <div id="upiInputArea" class="upi-input-area">
+          <label class="sr-only" for="upiAnswerInput" data-i18n="upiAnswerLabel"
+            >Your answer</label
+          >
+          <input
+            id="upiAnswerInput"
+            class="large-input single-line-input"
+            type="text"
+            autocomplete="off"
+            placeholder="Type your answer"
+            data-i18n-placeholder="upiPlaceholder"
+          />
+          <button
+            id="upiListenButton"
+            class="secondary-button voice-button"
+            type="button"
+          >
+            🎙️ <span data-i18n="speakAnswer">Speak Answer</span>
+          </button>
+          <button id="upiAnswerButton" class="primary-button" type="button">
+            <span data-i18n="continue">CONTINUE</span>
+          </button>
+        </div>
+
+        <div id="upiConfirmation" class="confirmation-panel" hidden>
+          <p class="eyebrow" data-i18n="pleaseConfirm">PLEASE CONFIRM</p>
+          <p id="upiConfirmationText" class="confirmation-text"></p>
+          <div class="confirmation-actions">
+            <button
+              id="upiConfirmButton"
+              class="confirm-button"
+              type="button"
+              data-i18n="yesConfirm"
+            >
+              YES, CONFIRM
+            </button>
+            <button
+              id="upiCancelButton"
+              class="cancel-button"
+              type="button"
+              data-i18n="noCancel"
+            >
+              NO, CANCEL
+            </button>
+          </div>
+        </div>
+
+        <div id="upiResult" class="result-panel" hidden>
+          <p id="upiResultTitle" class="eyebrow"></p>
+          <p id="upiResultMessage" class="result-text"></p>
+          <button
+            id="upiRestartButton"
+            class="primary-button"
+            type="button"
+            data-i18n="startAgain"
+          >
+            START AGAIN
+          </button>
+        </div>
+
+        <p
+          id="upiStatus"
+          class="status-message"
+          role="status"
+          aria-live="polite"
+        ></p>
+      </section>
+
+      <section
+        id="emergencyScreen"
+        class="screen"
+        aria-labelledby="emergencyTitle"
+        hidden
+      >
+        <button class="back-button" type="button" data-back-home>
+          ← <span data-i18n="back">Back</span>
+        </button>
+
+        <div class="emergency-heading">
+          <div class="big-emergency-icon" aria-hidden="true">🚨</div>
+          <h1 id="emergencyTitle" data-i18n="emergencyTitle">Need Help?</h1>
+          <p data-i18n="emergencyPrompt">Choose someone you trust.</p>
+        </div>
+
+        <div id="emergencyContacts" class="emergency-actions"></div>
+
+        <p class="small-note" data-i18n="emergencyNote">
+          Your saved emergency numbers are used only when you choose to call or
+          message them.
+        </p>
+      </section>
+    </main>
+
+    <script src="js/app.js"></script>
+    <script src="js/voice.js"></script>
+    <script src="js/messageExplainer.js"></script>
+    <script src="js/upiflow.js"></script>
+    <script src="js/emergency.js"></script>
+  </body>
 </html>

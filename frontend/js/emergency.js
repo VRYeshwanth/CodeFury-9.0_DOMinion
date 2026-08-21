@@ -1,84 +1,81 @@
 /*
-  Replace these placeholder numbers with the trusted family contacts.
-  Keep the numbers in this single configuration object.
-*/
-const EMERGENCY_CONTACTS = {
-  beta: {
+ * Replace these example values with the emergency contacts
+ * agreed upon for the Saathi demo.
+ *
+ * Keep the numbers in this single configuration array so
+ * they are not scattered across multiple files.
+ */
+const EMERGENCY_CONTACTS = [
+  {
     name: "Beta",
-    number: "+91XXXXXXXXXX",
+    phone: "+91XXXXXXXXXX",
   },
-  beti: {
+  {
     name: "Beti",
-    number: "+91XXXXXXXXXX",
+    phone: "+91XXXXXXXXXX",
   },
-};
+];
 
-function renderEmergency() {
-  app.innerHTML = `
-    <section class="screen">
-      <button class="back-button" id="emergencyBack">← ${t("Back to Home", "ಮುಖ್ಯ ಪುಟಕ್ಕೆ")}</button>
+function createTelLink(phone) {
+  return `tel:${phone}`;
+}
 
-      <div class="screen-header">
-        <h2>${t("Need Help?", "ಸಹಾಯ ಬೇಕೇ?")}</h2>
-        <p class="subtitle">${t(
-          "Choose a trusted family contact to call.",
-          "ನಿಮ್ಮ ನಂಬಿಕೆಯ ಕುಟುಂಬದವರನ್ನು ಕರೆ ಮಾಡಲು ಆಯ್ಕೆ ಮಾಡಿ.",
-        )}</p>
-      </div>
+function createWhatsAppLink(phone, language) {
+  const number = phone.replace(/\D/g, "");
 
-      <div class="emergency-grid">
-        ${contactButton("beta", "👨", t("Call Beta", "ಮಗನಿಗೆ ಕರೆ ಮಾಡಿ"), t("Trusted family contact", "ನಂಬಿಕೆಯ ಕುಟುಂಬದವರು"))}
-        ${contactButton("beti", "👩", t("Call Beti", "ಮಗಳಿಗೆ ಕರೆ ಮಾಡಿ"), t("Trusted family contact", "ನಂಬಿಕೆಯ ಕುಟುಂಬದವರು"))}
-      </div>
+  const message =
+    language === "kannada"
+      ? "ನನಗೆ ಸಹಾಯ ಬೇಕು. ದಯವಿಟ್ಟು ನನಗೆ ಕರೆ ಮಾಡಿ."
+      : "I need help. Please call me.";
 
-      <div class="helper">
-        ${t(
-          "Saathi does not contact anyone automatically. You choose the person and start the call.",
-          "ಸಾಥಿ ಯಾರನ್ನೂ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಸಂಪರ್ಕಿಸುವುದಿಲ್ಲ. ನೀವು ವ್ಯಕ್ತಿಯನ್ನು ಆಯ್ಕೆ ಮಾಡಿ ಕರೆ ಪ್ರಾರಂಭಿಸುತ್ತೀರಿ.",
-        )}
-      </div>
-    </section>
-  `;
+  return `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
+}
 
-  document.getElementById("emergencyBack").onclick = goHome;
+function renderEmergencyContacts() {
+  const container = document.getElementById("emergencyContacts");
 
-  Object.keys(EMERGENCY_CONTACTS).forEach((key) => {
-    const button = document.getElementById(`contact-${key}`);
-    if (button) {
-      button.onclick = () => callContact(key);
-    }
+  container.innerHTML = "";
+
+  EMERGENCY_CONTACTS.forEach((contact) => {
+    const wrapper = document.createElement("div");
+
+    const callButton = document.createElement("button");
+    callButton.type = "button";
+    callButton.className = "emergency-call-button";
+    callButton.innerHTML = `📞 ${escapeHTML(contact.name)}<span>${appState.language === "kannada" ? "ಕರೆ ಮಾಡಿ" : "Call"}</span>`;
+
+    callButton.addEventListener("click", () => {
+      window.location.href = createTelLink(contact.phone);
+    });
+
+    const whatsappButton = document.createElement("button");
+    whatsappButton.type = "button";
+    whatsappButton.className = "secondary-button";
+    whatsappButton.style.marginTop = "10px";
+    whatsappButton.innerHTML =
+      appState.language === "kannada"
+        ? "💬 WhatsApp ಸಂದೇಶ"
+        : "💬 Send WhatsApp Message";
+
+    whatsappButton.addEventListener("click", () => {
+      window.open(
+        createWhatsAppLink(contact.phone, appState.language),
+        "_blank",
+        "noopener,noreferrer",
+      );
+    });
+
+    wrapper.appendChild(callButton);
+    wrapper.appendChild(whatsappButton);
+    container.appendChild(wrapper);
   });
 }
 
-function contactButton(key, icon, title, subtitle) {
-  return `
-    <button class="contact-button" id="contact-${key}">
-      <span class="contact-icon" aria-hidden="true">${icon}</span>
-      <span>
-        <strong>${title}</strong>
-        <small>${subtitle}</small>
-      </span>
-    </button>
-  `;
-}
-
-function callContact(key) {
-  const contact = EMERGENCY_CONTACTS[key];
-  if (!contact || !contact.number || contact.number.includes("X")) {
-    showToast(
-      t(
-        "Please add the trusted contact number in emergency.js first.",
-        "ದಯವಿಟ್ಟು emergency.js ನಲ್ಲಿ ನಂಬಿಕೆಯ ಸಂಪರ್ಕ ಸಂಖ್ಯೆಯನ್ನು ಸೇರಿಸಿ.",
-      ),
-    );
-    return;
-  }
-
-  const confirmed = window.confirm(
-    t(`Call ${contact.name}?`, `${contact.name} ಅವರಿಗೆ ಕರೆ ಮಾಡಬೇಕೇ?`),
-  );
-
-  if (!confirmed) return;
-
-  window.location.href = `tel:${contact.number}`;
+function escapeHTML(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
 }
