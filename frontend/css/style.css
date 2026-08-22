@@ -413,3 +413,130 @@ button:disabled {
         animation: none;
     }
 }
+
+
+.auth-screen {
+    position: relative;
+    width: min(100%, 520px);
+    margin: 0 auto;
+    padding: 24px 0;
+}
+
+.auth-brand {
+    margin-bottom: 20px;
+}
+
+.auth-language-button {
+    position: absolute;
+    top: 20px;
+    right: 0;
+    min-width: 82px;
+    min-height: 48px;
+    cursor: pointer;
+}
+
+.auth-heading {
+    margin: 42px 0 24px;
+}
+
+.auth-heading h1 {
+    margin: 0;
+    color: var(--navy);
+    font-size: clamp(2rem, 8vw, 2.8rem);
+    line-height: 1.12;
+}
+
+.auth-view label {
+    display: block;
+    margin: 18px 0 8px;
+    color: var(--navy);
+    font-size: 1.08rem;
+    font-weight: 800;
+}
+
+.auth-input {
+    width: 100%;
+    min-height: 68px;
+    border: 3px solid var(--border);
+    border-radius: 18px;
+    background: var(--white);
+    color: var(--text);
+    padding: 14px 18px;
+    font-size: 1.2rem;
+}
+
+.auth-submit {
+    margin-top: 24px;
+}
+
+.auth-switch {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin: 24px 0;
+    color: var(--muted);
+    text-align: center;
+}
+
+.text-button {
+    border: 0;
+    background: transparent;
+    color: var(--blue-dark);
+    padding: 8px;
+    font-weight: 900;
+    text-decoration: underline;
+}
+
+.auth-error {
+    min-height: 30px;
+    margin: 14px 0 0;
+    color: var(--danger);
+    font-size: 1rem;
+    font-weight: 800;
+}
+
+.auth-connection-status {
+    min-height: 28px;
+    margin: 8px 0;
+    color: var(--muted);
+    font-weight: 700;
+    text-align: center;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.user-greeting {
+    max-width: 180px;
+    color: var(--navy);
+    font-size: 0.9rem;
+    font-weight: 800;
+    text-align: right;
+}
+
+.logout-button {
+    min-height: 48px;
+    border: 2px solid var(--danger);
+    border-radius: 14px;
+    background: var(--white);
+    color: var(--danger);
+    padding: 8px 12px;
+    font-size: 0.85rem;
+    font-weight: 900;
+}
+
+@media (max-width: 560px) {
+    .user-greeting {
+        width: 100%;
+        max-width: none;
+        order: 3;
+        text-align: right;
+    }
+}

@@ -1,260 +1,221 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
-    />
-    <meta name="theme-color" content="#0b1f33" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#0b1f33">
     <title>Saathi</title>
-    <link rel="icon" type="image/png" href="images/fav.png" />
-    <link rel="stylesheet" href="css/style.css" />
-  </head>
-  <body>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
     <main class="app-shell">
-      <header class="app-header">
-        <div>
-          <p class="brand">SAATHI</p>
-          <p class="tagline" data-i18n="tagline">Your daily companion</p>
-        </div>
-        <button
-          id="languageToggle"
-          class="language-button"
-          type="button"
-          aria-label="Change language"
-        >
-          ಕನ್ನಡ
-        </button>
-      </header>
 
-      <section
-        id="homeScreen"
-        class="screen active"
-        aria-labelledby="homeTitle"
-      >
-        <div class="welcome">
-          <p class="eyebrow" data-i18n="welcomeEyebrow">Hello</p>
-          <h1 id="homeTitle" data-i18n="welcomeTitle">How can Saathi help?</h1>
-        </div>
+        <section id="authScreen" class="auth-screen" aria-labelledby="authTitle">
+            <div class="auth-brand">
+                <p class="brand">SAATHI</p>
+                <p class="tagline" data-i18n="tagline">Your daily companion</p>
+            </div>
+            <button id="authLanguageToggle" class="language-button auth-language-button"
+                type="button" aria-label="Change language">ಕನ್ನಡ</button>
 
-        <div class="feature-list">
-          <button id="messageFeatureButton" class="feature-card" type="button">
-            <span class="feature-icon" aria-hidden="true">💬</span>
-            <span>
-              <strong data-i18n="messageFeature">Understand a Message</strong>
-              <small data-i18n="messageFeatureHint"
-                >Make a difficult message simple</small
-              >
-            </span>
-          </button>
+            <div id="loginView" class="auth-view">
+                <div class="auth-heading">
+                    <p class="eyebrow" data-i18n="welcomeBack">WELCOME BACK</p>
+                    <h1 id="authTitle" data-i18n="loginTitle">Welcome back</h1>
+                </div>
+                <form id="loginForm" novalidate>
+                    <label for="loginEmail" data-i18n="emailLabel">Email</label>
+                    <input id="loginEmail" class="auth-input" type="email" autocomplete="email" required>
+                    <label for="loginPassword" data-i18n="passwordLabel">Password</label>
+                    <input id="loginPassword" class="auth-input" type="password" autocomplete="current-password" required>
+                    <p id="loginError" class="auth-error" role="alert" aria-live="polite"></p>
+                    <button id="loginButton" class="primary-button auth-submit" type="submit" data-i18n="login">LOGIN</button>
+                </form>
+                <div class="auth-switch">
+                    <span data-i18n="noAccount">Don't have an account?</span>
+                    <button id="showRegisterButton" class="text-button" type="button" data-i18n="createAccount">CREATE ACCOUNT</button>
+                </div>
+            </div>
 
-          <button id="upiFeatureButton" class="feature-card" type="button">
-            <span class="feature-icon" aria-hidden="true">💰</span>
-            <span>
-              <strong data-i18n="upiFeature">Practice Sending Money</strong>
-              <small data-i18n="upiFeatureHint"
-                >Demo only — no real payment</small
-              >
-            </span>
-          </button>
+            <div id="registerView" class="auth-view" hidden>
+                <div class="auth-heading">
+                    <p class="eyebrow" data-i18n="createAccountEyebrow">GET STARTED</p>
+                    <h1 data-i18n="registerTitle">Create your account</h1>
+                </div>
+                <form id="registerForm" novalidate>
+                    <label for="registerName" data-i18n="nameLabel">Your name</label>
+                    <input id="registerName" class="auth-input" type="text" autocomplete="name" minlength="2" maxlength="100" required>
+                    <label for="registerEmail" data-i18n="emailLabel">Email</label>
+                    <input id="registerEmail" class="auth-input" type="email" autocomplete="email" required>
+                    <label for="registerPassword" data-i18n="passwordLabel">Password</label>
+                    <input id="registerPassword" class="auth-input" type="password" autocomplete="new-password" minlength="8" required>
+                    <label for="registerConfirmPassword" data-i18n="confirmPasswordLabel">Confirm password</label>
+                    <input id="registerConfirmPassword" class="auth-input" type="password" autocomplete="new-password" minlength="8" required>
+                    <p id="registerError" class="auth-error" role="alert" aria-live="polite"></p>
+                    <button id="registerButton" class="primary-button auth-submit" type="submit" data-i18n="createAccountButton">CREATE ACCOUNT</button>
+                </form>
+                <div class="auth-switch">
+                    <span data-i18n="haveAccount">Already have an account?</span>
+                    <button id="showLoginButton" class="text-button" type="button" data-i18n="login">LOGIN</button>
+                </div>
+            </div>
+            <p id="authConnectionStatus" class="auth-connection-status" role="status"></p>
+        </section>
 
-          <button
-            id="emergencyFeatureButton"
-            class="feature-card emergency-card"
-            type="button"
-          >
-            <span class="feature-icon" aria-hidden="true">🚨</span>
-            <span>
-              <strong data-i18n="emergencyFeature">Emergency Help</strong>
-              <small data-i18n="emergencyFeatureHint"
-                >Call someone you trust</small
-              >
-            </span>
-          </button>
-        </div>
-      </section>
+        <div id="authenticatedApp" hidden>
+        <header class="app-header">
+            <div>
+                <p class="brand">SAATHI</p>
+                <p class="tagline" data-i18n="tagline">Your daily companion</p>
+            </div>
+            <div class="header-actions">
+                <div id="userGreeting" class="user-greeting" hidden></div>
+                <button id="languageToggle" class="language-button" type="button" aria-label="Change language">ಕನ್ನಡ</button>
+                <button id="logoutButton" class="logout-button" type="button" data-i18n="logout">LOG OUT</button>
+            </div>
+        </header>
 
-      <section
-        id="messageScreen"
-        class="screen"
-        aria-labelledby="messageTitle"
-        hidden
-      >
-        <button class="back-button" type="button" data-back-home>
-          ← <span data-i18n="back">Back</span>
-        </button>
+        <section id="homeScreen" class="screen active" aria-labelledby="homeTitle">
+            <div class="welcome">
+                <p class="eyebrow" data-i18n="welcomeEyebrow">Hello</p>
+                <h1 id="homeTitle" data-i18n="welcomeTitle">How can Saathi help?</h1>
+            </div>
 
-        <div class="screen-heading">
-          <p class="eyebrow">1</p>
-          <h1 id="messageTitle" data-i18n="messageTitle">
-            Understand a Message
-          </h1>
-          <p data-i18n="messagePrompt">
-            Paste or type the message you received.
-          </p>
-        </div>
+            <div class="feature-list">
+                <button id="messageFeatureButton" class="feature-card" type="button">
+                    <span class="feature-icon" aria-hidden="true">💬</span>
+                    <span>
+                        <strong data-i18n="messageFeature">Understand a Message</strong>
+                        <small data-i18n="messageFeatureHint">Make a difficult message simple</small>
+                    </span>
+                </button>
 
-        <div class="voice-row">
-          <button
-            id="messageListenButton"
-            class="secondary-button voice-button"
-            type="button"
-          >
-            🎙️ <span data-i18n="speakMessage">Speak Message</span>
-          </button>
-        </div>
+                <button id="upiFeatureButton" class="feature-card" type="button">
+                    <span class="feature-icon" aria-hidden="true">💰</span>
+                    <span>
+                        <strong data-i18n="upiFeature">Practice Sending Money</strong>
+                        <small data-i18n="upiFeatureHint">Demo only — no real payment</small>
+                    </span>
+                </button>
 
-        <label class="sr-only" for="messageInput" data-i18n="messageInputLabel"
-          >Message</label
-        >
-        <textarea
-          id="messageInput"
-          class="large-input"
-          rows="6"
-          placeholder="Example: Your bank account has been debited by Rs 2000."
-          data-i18n-placeholder="messagePlaceholder"
-        ></textarea>
+                <button id="emergencyFeatureButton" class="feature-card emergency-card" type="button">
+                    <span class="feature-icon" aria-hidden="true">🚨</span>
+                    <span>
+                        <strong data-i18n="emergencyFeature">Emergency Help</strong>
+                        <small data-i18n="emergencyFeatureHint">Call someone you trust</small>
+                    </span>
+                </button>
+            </div>
+        </section>
 
-        <button id="explainButton" class="primary-button" type="button">
-          <span data-i18n="explain">EXPLAIN</span>
-        </button>
+        <section id="messageScreen" class="screen" aria-labelledby="messageTitle" hidden>
+            <button class="back-button" type="button" data-back-home>← <span data-i18n="back">Back</span></button>
 
-        <p
-          id="messageStatus"
-          class="status-message"
-          role="status"
-          aria-live="polite"
-        ></p>
+            <div class="screen-heading">
+                <p class="eyebrow">1</p>
+                <h1 id="messageTitle" data-i18n="messageTitle">Understand a Message</h1>
+                <p data-i18n="messagePrompt">Paste or type the message you received.</p>
+            </div>
 
-        <div id="explanationPanel" class="result-panel" hidden>
-          <p class="eyebrow" data-i18n="whatThisMeans">WHAT THIS MEANS</p>
-          <p id="explanationText" class="result-text"></p>
-          <button
-            id="readExplanationButton"
-            class="secondary-button"
-            type="button"
-          >
-            🔊 <span data-i18n="readAloud">READ ALOUD</span>
-          </button>
-        </div>
-      </section>
+            <div class="voice-row">
+                <button id="messageListenButton" class="secondary-button voice-button" type="button">
+                    🎙️ <span data-i18n="speakMessage">Speak Message</span>
+                </button>
+            </div>
 
-      <section id="upiScreen" class="screen" aria-labelledby="upiTitle" hidden>
-        <button class="back-button" type="button" data-back-home>
-          ← <span data-i18n="back">Back</span>
-        </button>
+            <label class="sr-only" for="messageInput" data-i18n="messageInputLabel">Message</label>
+            <textarea id="messageInput" class="large-input" rows="6"
+                placeholder="Example: Your bank account has been debited by Rs 2000."
+                data-i18n-placeholder="messagePlaceholder"></textarea>
 
-        <div class="demo-banner">
-          <strong data-i18n="demoOnly">DEMO ONLY</strong>
-          <span data-i18n="noMoney">No real money is transferred.</span>
-        </div>
-
-        <div class="screen-heading">
-          <p class="eyebrow">2</p>
-          <h1 id="upiTitle" data-i18n="upiTitle">Practice Sending Money</h1>
-          <p id="upiQuestion" data-i18n="upiStarting">
-            We will guide you one step at a time.
-          </p>
-        </div>
-
-        <div id="upiInputArea" class="upi-input-area">
-          <label class="sr-only" for="upiAnswerInput" data-i18n="upiAnswerLabel"
-            >Your answer</label
-          >
-          <input
-            id="upiAnswerInput"
-            class="large-input single-line-input"
-            type="text"
-            autocomplete="off"
-            placeholder="Type your answer"
-            data-i18n-placeholder="upiPlaceholder"
-          />
-          <button
-            id="upiListenButton"
-            class="secondary-button voice-button"
-            type="button"
-          >
-            🎙️ <span data-i18n="speakAnswer">Speak Answer</span>
-          </button>
-          <button id="upiAnswerButton" class="primary-button" type="button">
-            <span data-i18n="continue">CONTINUE</span>
-          </button>
-        </div>
-
-        <div id="upiConfirmation" class="confirmation-panel" hidden>
-          <p class="eyebrow" data-i18n="pleaseConfirm">PLEASE CONFIRM</p>
-          <p id="upiConfirmationText" class="confirmation-text"></p>
-          <div class="confirmation-actions">
-            <button
-              id="upiConfirmButton"
-              class="confirm-button"
-              type="button"
-              data-i18n="yesConfirm"
-            >
-              YES, CONFIRM
+            <button id="explainButton" class="primary-button" type="button">
+                <span data-i18n="explain">EXPLAIN</span>
             </button>
-            <button
-              id="upiCancelButton"
-              class="cancel-button"
-              type="button"
-              data-i18n="noCancel"
-            >
-              NO, CANCEL
-            </button>
-          </div>
+
+            <p id="messageStatus" class="status-message" role="status" aria-live="polite"></p>
+
+            <div id="explanationPanel" class="result-panel" hidden>
+                <p class="eyebrow" data-i18n="whatThisMeans">WHAT THIS MEANS</p>
+                <p id="explanationText" class="result-text"></p>
+                <button id="readExplanationButton" class="secondary-button" type="button">
+                    🔊 <span data-i18n="readAloud">READ ALOUD</span>
+                </button>
+            </div>
+        </section>
+
+        <section id="upiScreen" class="screen" aria-labelledby="upiTitle" hidden>
+            <button class="back-button" type="button" data-back-home>← <span data-i18n="back">Back</span></button>
+
+            <div class="demo-banner">
+                <strong data-i18n="demoOnly">DEMO ONLY</strong>
+                <span data-i18n="noMoney">No real money is transferred.</span>
+            </div>
+
+            <div class="screen-heading">
+                <p class="eyebrow">2</p>
+                <h1 id="upiTitle" data-i18n="upiTitle">Practice Sending Money</h1>
+                <p id="upiQuestion" data-i18n="upiStarting">We will guide you one step at a time.</p>
+            </div>
+
+            <div id="upiInputArea" class="upi-input-area">
+                <label class="sr-only" for="upiAnswerInput" data-i18n="upiAnswerLabel">Your answer</label>
+                <input id="upiAnswerInput" class="large-input single-line-input" type="text"
+                    autocomplete="off" placeholder="Type your answer" data-i18n-placeholder="upiPlaceholder">
+                <button id="upiListenButton" class="secondary-button voice-button" type="button">
+                    🎙️ <span data-i18n="speakAnswer">Speak Answer</span>
+                </button>
+                <button id="upiAnswerButton" class="primary-button" type="button">
+                    <span data-i18n="continue">CONTINUE</span>
+                </button>
+            </div>
+
+            <div id="upiConfirmation" class="confirmation-panel" hidden>
+                <p class="eyebrow" data-i18n="pleaseConfirm">PLEASE CONFIRM</p>
+                <p id="upiConfirmationText" class="confirmation-text"></p>
+                <div class="confirmation-actions">
+                    <button id="upiConfirmButton" class="confirm-button" type="button" data-i18n="yesConfirm">
+                        YES, CONFIRM
+                    </button>
+                    <button id="upiCancelButton" class="cancel-button" type="button" data-i18n="noCancel">
+                        NO, CANCEL
+                    </button>
+                </div>
+            </div>
+
+            <div id="upiResult" class="result-panel" hidden>
+                <p id="upiResultTitle" class="eyebrow"></p>
+                <p id="upiResultMessage" class="result-text"></p>
+                <button id="upiRestartButton" class="primary-button" type="button" data-i18n="startAgain">
+                    START AGAIN
+                </button>
+            </div>
+
+            <p id="upiStatus" class="status-message" role="status" aria-live="polite"></p>
+        </section>
+
+        <section id="emergencyScreen" class="screen" aria-labelledby="emergencyTitle" hidden>
+            <button class="back-button" type="button" data-back-home>← <span data-i18n="back">Back</span></button>
+
+            <div class="emergency-heading">
+                <div class="big-emergency-icon" aria-hidden="true">🚨</div>
+                <h1 id="emergencyTitle" data-i18n="emergencyTitle">Need Help?</h1>
+                <p data-i18n="emergencyPrompt">Choose someone you trust.</p>
+            </div>
+
+            <div id="emergencyContacts" class="emergency-actions"></div>
+
+            <p class="small-note" data-i18n="emergencyNote">
+                Your saved emergency numbers are used only when you choose to call or message them.
+            </p>
+        </section>
         </div>
-
-        <div id="upiResult" class="result-panel" hidden>
-          <p id="upiResultTitle" class="eyebrow"></p>
-          <p id="upiResultMessage" class="result-text"></p>
-          <button
-            id="upiRestartButton"
-            class="primary-button"
-            type="button"
-            data-i18n="startAgain"
-          >
-            START AGAIN
-          </button>
-        </div>
-
-        <p
-          id="upiStatus"
-          class="status-message"
-          role="status"
-          aria-live="polite"
-        ></p>
-      </section>
-
-      <section
-        id="emergencyScreen"
-        class="screen"
-        aria-labelledby="emergencyTitle"
-        hidden
-      >
-        <button class="back-button" type="button" data-back-home>
-          ← <span data-i18n="back">Back</span>
-        </button>
-
-        <div class="emergency-heading">
-          <div class="big-emergency-icon" aria-hidden="true">🚨</div>
-          <h1 id="emergencyTitle" data-i18n="emergencyTitle">Need Help?</h1>
-          <p data-i18n="emergencyPrompt">Choose someone you trust.</p>
-        </div>
-
-        <div id="emergencyContacts" class="emergency-actions"></div>
-
-        <p class="small-note" data-i18n="emergencyNote">
-          Your saved emergency numbers are used only when you choose to call or
-          message them.
-        </p>
-      </section>
     </main>
 
     <script src="js/app.js"></script>
+    <script src="js/auth.js"></script>
     <script src="js/voice.js"></script>
     <script src="js/messageExplainer.js"></script>
     <script src="js/upiflow.js"></script>
     <script src="js/emergency.js"></script>
-  </body>
+</body>
 </html>
