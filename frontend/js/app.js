@@ -159,6 +159,7 @@ async function postJSON(path, body) {
     });
 
     let data = {};
+
     try {
         data = await response.json();
     } catch {
@@ -166,20 +167,33 @@ async function postJSON(path, body) {
     }
 
     if (!response.ok || data.success === false) {
-        throw new Error(data.error || data.message || "Request failed");
+        throw new Error(
+            data.error ||
+            data.message ||
+            "Request failed"
+        );
     }
 
     return data;
 }
 
 async function getJSON(path) {
-    const response = await fetch(`${API_BASE_URL}${path}`, {
-        credentials: "include"
-    });
+    const response = await fetch(
+        `${API_BASE_URL}${path}`,
+        {
+            method: "GET",
+            credentials: "include"
+        }
+    );
+
     const data = await response.json();
 
     if (!response.ok || data.success === false) {
-        throw new Error(data.error || data.message || "Request failed");
+        throw new Error(
+            data.error ||
+            data.message ||
+            "Request failed"
+        );
     }
 
     return data;
