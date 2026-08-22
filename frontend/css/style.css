@@ -540,3 +540,26 @@ button:disabled {
         text-align: right;
     }
 }
+
+.site-footer {
+    text-align: center;
+    padding: 24px 16px;
+    margin-top: 40px;
+    color: #555;
+    font-size: 15px;
+    background-color: #E8F5E9;
+    color: #1B4332;
+    border-top: 1px solid #C8E6C9;
+}
+
+.footer-brand {
+    font-size: 20px;
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 8px;
+}
+
+.team-members {
+    margin-top: 6px;
+    font-size: 14px;
+}
