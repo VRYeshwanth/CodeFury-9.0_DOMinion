@@ -27,6 +27,18 @@ Saathi provides a simplified interface with:
 - Simple language
 - One-step-at-a-time guidance
 
+## 🎯 Why Saathi?
+
+Saathi is not designed to add more features to a smartphone.
+
+It is designed to remove complexity.
+
+Instead of asking an elderly user to understand multiple menus,
+technical terminology, and unfamiliar interfaces, Saathi follows
+a simple interaction model:
+
+**One screen → One question → One action → Voice feedback.**
+
 ## 🌍 Supported Languages
 
 - English
@@ -71,9 +83,11 @@ A large emergency button allows the user to quickly contact a trusted person usi
 
 **Repository:** `CodeFury-9.0_DOMinion`
 
+**Team Name:** DOMinion
+
 **Team Size:** 3
 
-**Team Members:** VR Yeshwanth, Manoj, Shrisamarth
+**Team Members:** VR Yeshwanth, Manoj Mahadeva Bhandi, Shrisamarth Chavan
 
 The project was designed as a hackathon-focused prototype with an emphasis on usability, accessibility, and a clear real-world problem.
 
@@ -262,6 +276,14 @@ Authentication uses JWTs stored in HTTP-only cookies so that authentication toke
 
 ---
 
+## 🚀 Live Demo
+
+**Frontend:** https://codefury-9-0-dominion-frontend.onrender.com
+
+**Backend:** https://codefury-9-0-dominion.onrender.com
+
+---
+
 # 🛠️ Installation
 
 ## Prerequisites
@@ -282,7 +304,7 @@ git --version
 
 ## Clone the repository
 ```bash
-git clone https://github.com/YOUR_USERNAME/CodeFury-9.0_DOMinion.git
+git clone https://github.com/VRYeshwanth/CodeFury-9.0_DOMinion.git
 cd CodeFury-9.0_DOMinion
 ```
 
@@ -293,7 +315,7 @@ cd backend
 npm install
 ```
 
-**Create environemnt file `.env` containing the following:**
+**Create an environemnt file `.env` containing the following:**
 ```bash
 PORT=5000
 FRONTEND_URL=http://127.0.0.1:5500 (Replace 5500 with the port obtained when running index.html in live preview)
