@@ -1,8 +1,22 @@
 const express = require("express");
-const { explainController } = require("../controllers/explainController");
+
+const {
+    explainController
+} = require("../controllers/explainController");
+
+const authenticate = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
-router.post("/", explainController);
+/**
+ * Explain a message
+ *
+ * Authentication required.
+ */
+router.post(
+    "/",
+    authenticate,
+    explainController
+);
 
 module.exports = router;

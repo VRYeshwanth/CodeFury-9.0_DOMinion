@@ -2,28 +2,70 @@ require("dotenv").config();
 
 const express = require("express");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
+const helmet = require("helmet");
+const rateLimit = require("express-rate-limit");
 
 const explainRoutes = require("./routes/explainRoutes");
 const sessionRoutes = require("./routes/sessionRoutes");
+const authRoutes = require("./routes/authRoutes");
+
+const authenticate = require("./middleware/authMiddleware");
 const errorHandler = require("./middleware/errorHandler");
 
 const app = express();
 
+// -------------------------
+// Security Middleware
+// -------------------------
+
+app.use(helmet());
 
 // -------------------------
-// Middleware
+// CORS
 // -------------------------
+
+const allowedOrigin = process.env.FRONTEND_URL;
+
+if (!allowedOrigin) {
+    throw new Error(
+        "FRONTEND_URL is not configured."
+    );
+}
 
 app.use(
     cors({
-        origin: process.env.FRONTEND_URL || "*"
+        origin: allowedOrigin,
+        credentials: true,
+        methods: [
+            "GET",
+            "POST",
+            "PUT",
+            "PATCH",
+            "DELETE",
+            "OPTIONS"
+        ],
+        allowedHeaders: [
+            "Content-Type"
+        ]
     })
 );
 
-app.use(express.json({
-    limit: "100kb"
-}));
+// -------------------------
+// Body Parser
+// -------------------------
 
+app.use(
+    express.json({
+        limit: "100kb"
+    })
+);
+
+// -------------------------
+// Cookie Parser
+// -------------------------
+
+app.use(cookieParser());
 
 // -------------------------
 // Health Check
@@ -36,15 +78,58 @@ app.get("/api/health", (req, res) => {
     });
 });
 
+// -------------------------
+// Authentication Rate Limit
+// -------------------------
+
+const authLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 10,
+
+    standardHeaders: true,
+    legacyHeaders: false,
+
+    message: {
+        success: false,
+        error:
+            "Too many authentication attempts. Please try again later."
+    }
+});
 
 // -------------------------
-// Routes
+// Authentication Routes
 // -------------------------
 
-app.use("/api/explain", explainRoutes);
+app.use(
+    "/api/auth/login",
+    authLimiter
+);
 
-app.use("/api/sessions", sessionRoutes);
+app.use(
+    "/api/auth/register",
+    authLimiter
+);
 
+app.use(
+    "/api/auth",
+    authRoutes
+);
+
+// -------------------------
+// Protected Application Routes
+// -------------------------
+
+app.use(
+    "/api/explain",
+    authenticate,
+    explainRoutes
+);
+
+app.use(
+    "/api/sessions",
+    authenticate,
+    sessionRoutes
+);
 
 // -------------------------
 // 404 Handler
@@ -57,12 +142,10 @@ app.use((req, res) => {
     });
 });
 
-
 // -------------------------
 // Global Error Handler
 // -------------------------
 
 app.use(errorHandler);
-
 
 module.exports = app;

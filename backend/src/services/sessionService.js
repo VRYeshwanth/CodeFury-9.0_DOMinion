@@ -2,12 +2,32 @@ const crypto = require("crypto");
 
 const sessions = new Map();
 
-function createSession(language = "english") {
+
+/**
+ * Create a new session for an authenticated user.
+ *
+ * @param {string} userId
+ * @param {string} language
+ */
+function createSession(userId, language = "english") {
+
+    if (!userId) {
+        throw new Error("User ID is required to create a session.");
+    }
+
     const sessionId = crypto.randomUUID();
 
     const session = {
         id: sessionId,
-        language,
+
+        // The authenticated user who owns this session
+        userId,
+
+        language:
+            language === "kannada"
+                ? "kannada"
+                : "english",
+
         createdAt: new Date().toISOString(),
 
         upi: {
@@ -24,13 +44,52 @@ function createSession(language = "english") {
     return session;
 }
 
-function getSession(sessionId) {
-    return sessions.get(sessionId);
+
+/**
+ * Get a session only if it belongs to the user.
+ *
+ * @param {string} sessionId
+ * @param {string} userId
+ */
+function getSession(sessionId, userId) {
+
+    const session = sessions.get(sessionId);
+
+    if (!session) {
+        return null;
+    }
+
+    // Prevent one user from accessing another user's session
+    if (session.userId !== userId) {
+        return null;
+    }
+
+    return session;
 }
 
-function deleteSession(sessionId) {
+
+/**
+ * Delete a session only if it belongs to the user.
+ *
+ * @param {string} sessionId
+ * @param {string} userId
+ */
+function deleteSession(sessionId, userId) {
+
+    const session = sessions.get(sessionId);
+
+    if (!session) {
+        return false;
+    }
+
+    // Prevent one user from deleting another user's session
+    if (session.userId !== userId) {
+        return false;
+    }
+
     return sessions.delete(sessionId);
 }
+
 
 module.exports = {
     createSession,
